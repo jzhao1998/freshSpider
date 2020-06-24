@@ -15,16 +15,21 @@ def getHtml(filename,url,headers):
 
 def scrapyContent(filename):
     body=open(filename,'r').read()
-    class1=Selector(text=body).xpath('//img/@alt').extract()
+    itemName=Selector(text=body).xpath("/html/body/div/div[3]//img//@alt").extract()
     imageUrlList=Selector(text=body).xpath('//img/@data-ks-lazyload').extract()
-    for i in class1:
+    k=0
+    for i in itemName[0:60]:
         print(i.replace('\\"',""))
+        k+=1
+    print(k)
     j=0
+    """
     for i in imageUrlList:
         filename=i.replace('\\"',"")[2:]
         print("http://"+filename)
-        saveImage("http://"+filename,str(j)+".jpg")
+        saveImage("http://"+filename,"image/"+str(j)+".jpg")
         j+=1
+    """
 
 
 def saveImage(ImageUrl,ImageName):
