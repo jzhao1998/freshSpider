@@ -17,11 +17,11 @@ def scrapyContent(filename):
     body=open(filename,'r').read()
     itemName=Selector(text=body).xpath("/html/body/div/div[3]//img//@alt").extract()
     imageUrlList=Selector(text=body).xpath('//img/@data-ks-lazyload').extract()
-    k=0
+    itemUrlList=Selector(text=body).xpath("/html/body/div/div[3]//dt/a//@href").extract()
+    #使用图片的名字可以防止一些空格（detail的a中的名字可能有很多空格）
     for i in itemName[0:60]:
         print(i.replace('\\"',""))
-        k+=1
-    print(k)
+    #保存图片，图片名字由数字命名，之后可以换成其他的名字
     j=0
     """
     for i in imageUrlList:
@@ -30,6 +30,12 @@ def scrapyContent(filename):
         saveImage("http://"+filename,"image/"+str(j)+".jpg")
         j+=1
     """
+    for i in itemUrlList:
+        if(i[2:4]!="//"):
+            itemUrlList.remove(i)
+    for i in itemUrlList[0:60]:
+        itemUrl="https:"+i.replace('\\"',"")
+        print(itemUrl)
 
 
 def saveImage(ImageUrl,ImageName):
